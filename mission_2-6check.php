@@ -1,143 +1,121 @@
 
 <html>
-
 <form method="post" action="mission_2-6check.php">
-
-
 <title>
-���[���b�p���V�u���O
+ヨーロッパ周遊ブログ
 </title>
 <p>
-<h1>���[���b�p���V�u���O</h1>
-���O�F<br>
-<input type="text" name="���O"/><br>
+<h1>ヨーロッパ周遊ブログ</h1>
+名前：<br>
+<input type="text" name="名前"/><br>
 <br>
-���[���b�p�ɍs�������Ƃ�����ꍇ�́A�������߂̍���3�܂Łu���v�łȂ��ŋ����Ă��������B<br>
-(��)�X�C�X���A�C�X�����h���m���E�F�[<br>
-�s�������Ƃ��Ȃ��ꍇ�́A�s���Ă݂�������3�܂Łu�E�v�łȂ��ŋ����Ă��������B<br>
-(��)�M���V���E�A�C�������h�E�|�[�����h<br>
+ヨーロッパに行ったことがある場合は、おすすめの国を3つまで「＆」でつないで教えてください。<br>
+(例)スイス＆アイスランド＆ノルウェー<br>
+行ったことがない場合は、行ってみたい国を3つまで「・」でつないで教えてください。<br>
+(例)ギリシャ・アイルランド・ポーランド<br>
 <textarea name="comment" rows="4" cols="50"></textarea><br>
 <br>
-�p�X���[�h:<br>
+パスワード:<br>
 <input type="text" name="password"/><br>
-(��)�l�����܂ރp�X���[�h�╁�i�g���Ă���p�X���[�h�͎g��Ȃ��ł��������I<br>
+(注)個人情報を含むパスワードや普段使っているパスワードは使わないでください！<br>
 <br>
-<input type="submit" value="���M" />
-
+<input type="submit" value="送信" />
 </p>
 </form>
 
-
 <?php
 
-//���O�ƃR�����g���󂯎��ϐ��Ɋi�[
-$name1 = $_POST['���O'];
+//名前とコメントを受け取り変数に格納
+$name1 = $_POST['名前'];
 $comment1 = $_POST['comment'];
 
-//�p�X���[�h���󂯎��ϐ��Ɋi�[
+//パスワードを受け取り変数に格納
 $password = $_POST['password'];
 
-
-//���s���폜����
+//改行を削除する
 $comment2 = str_replace("\r\n","",$comment1);
 
-//if����p���āA�f�[�^�̑��M���������������Ə�����t����
+//if分を用いて、データの送信があった時だけと条件を付ける
 if(!empty($password)){
 //echo $password;
 
-  //���t�Ǝ��Ԃ�ϐ��Ɋi�[
+  //日付と時間を変数に格納
   $date = date("Y/m/d H:i:s");
 
-
-  //�e�L�X�g�t�@�C����ϐ��Ɋi�[
+  //テキストファイルを変数に格納
   $filename = 'kadai2-6check.txt';
 
-  //�t�@�C����ǋL�������݃��[�h�ŊJ��
+  //ファイルを追記書き込みモードで開く
   $fp = fopen($filename, 'a');
 
-  //file�֐��Ńt�@�C����z��Ɋi�[���ϐ��ɁB
+  //file関数でファイルを配列に格納し変数に。
   $hairetsu = file($filename);
   $lines = array($hairetsu);
-  //�z��̐���count�Ő����A���̒l��ϐ��Ɋi�[
+  //配列の数をcountで数え、その値を変数に格納
   $number = count($lines,COUNT_RECURSIVE);
 
-
-
-  //�o�͂��������ׂĂ̕��������̕ϐ��ɂ܂Ƃ߂�B
+  //出力したいすべての文字列を一つの変数にまとめる。
   $data = $number ."<>" . $name1 . "<>" .$comment2 ."<>" .$date ."<>" .$password ."<>" ."\n";
 
-
-  //�t�@�C���Ɏ󂯎�����f�[�^����������
+  //ファイルに受け取ったデータを書き込む
   fwrite($fp,$data);
 
-
-  //�t�@�C�������
+  //ファイルを閉じる
   fclose($fp);
-
 }
 ?>
 
 <?php
-//if����p���āA�f�[�^�̑��M���������������Ə�����t����
+//if分を用いて、データの送信があった時だけと条件を付ける
 if(!empty($name1)){
 
-  
   $filename1 = 'kadai2-6check.txt';
 
-  //�t�@�C����z��Ɋi�[���ϐ���
+  //ファイルを配列に格納し変数に
   $chat = file($filename1);
 
-  //���[�v�֐���p����/explode��<>����菜���A$hairetsu�̒��g�̂��ꂼ��̒l���擾�B
+  //ループ関数を用いて/explodeで<>を取り除き、$hairetsuの中身のそれぞれの値を取得。
 
   foreach($chat as $value){
-
-
 
 	$pieces = explode("<>", $value);
 		if(!empty($pieces[1])){
 
 	  	$finaldata = $pieces[0] ." " .$pieces[1] ." " .$pieces[2] ." " .$pieces[3];
-  		echo $finaldata ."<br>";//$pieces�����ׂĕ\��
+  		echo $finaldata ."<br>";//$piecesをすべて表示
 		}
-
-
   }
-
 }
 ?>
 
 <?php
-//�폜�t�H�[���v���O�����J�n
+//削除フォームプログラム開始
 ?>
 
 <html>
 <form method="post" action="mission_2-6check.php">
-
 <title>
-�폜�ԍ��p�t�H�[��
+削除番号用フォーム
 </title>
 <p>
 <br>
-<h2>�폜�ԍ��p�t�H�[��</h2>
-���e���폜�������ꍇ�Ɏg���Ă��������B<br>
-�폜�Ώ۔ԍ��F<br>
-<input type="text" name="�폜�ԍ�"/><br>
-�p�X���[�h�F<br>
-<input type="text" name="�폜�p�Í�"/><br>
+<h2>削除番号用フォーム</h2>
+投稿を削除したい場合に使ってください。<br>
+削除対象番号：<br>
+<input type="text" name="削除番号"/><br>
+パスワード：<br>
+<input type="text" name="削除用暗号"/><br>
 <br>
-<input type="submit" value="���̔ԍ��̓��e���폜����" />
-
+<input type="submit" value="この番号の投稿を削除する" />
 </p>
 </form>
 
-
 <?php
-$password = $_POST['�폜�p�Í�'];
-$delete = $_POST['�폜�ԍ�'];
+$password = $_POST['削除用暗号'];
+$delete = $_POST['削除番号'];
 
-
-//if����p���āA�f�[�^�̑��M���������������Ə�����t����
-//���̂Ƃ��A�p�X���[�h���͂����߂�t�H�[����\������B
+//if分を用いて、データの送信があった時だけと条件を付ける
+//そのとき、パスワード入力を求めるフォームを表示する。
 if(!empty($password)){
 //echo $delete;
 //echo $password;
@@ -145,162 +123,143 @@ if(!empty($password)){
 
 $code = $password;
 
-
-//�e�L�X�g�t�@�C�����֐��Ɋi�[
+//テキストファイルを関数に格納
 $filename0 = 'kadai2-6check.txt';
 
-//�t�@�C����z��Ɋi�[���ϐ���
+//ファイルを配列に格納し変数に
 $chat = file($filename0);
-
 
 	$fp2 = fopen($filename0, 'w+');
 //echo $code;
-		/*���[�v�֐���p����/explode��<>����菜���A$chat�̒��g�̂��ꂼ��̒l���擾�B*/
+		/*ループ関数を用いて/explodeで<>を取り除き、$chatの中身のそれぞれの値を取得。*/
 		foreach($chat as $value){
 		$pieces = explode("<>", $value);
 		//echo $pieces[4];
 
-
-				/*�e�L�X�g�t�@�C���ɂ��铊�e�ԍ���POST�ō폜�ԍ��t�H�[������
-		  		�󂯎�����폜�ԍ����r���A�C�R�[���̂Ƃ����p�X���[�h����v����Ƃ��͍폜����*/
+				/*テキストファイルにある投稿番号とPOSTで削除番号フォームから
+		  		受け取った削除番号を比較し、イコールのときかつパスワードが一致するときは削除する*/
 				if($pieces[0] == $delete and $pieces[4] == $code){
 				fwrite($fp2, ' ' ."\n");
 
-					//����ȊO�̏ꍇ�͌��̔z��̃f�[�^����������
+					//それ以外の場合は元の配列のデータを書き込む
 				}	else{
 					fputs($fp2, $value);
 					}
-
 		}
-
+	
 	fclose($fp2);
-
 }
-
 ?>
 
 <?php
-//if����p���āA�f�[�^�̑��M���������������Ə�����t����
-if(!empty($_POST['�폜�p�Í�'])){
+//if分を用いて、データの送信があった時だけと条件を付ける
+if(!empty($_POST['削除用暗号'])){
 
-  
   $filename1 = 'kadai2-6check.txt';
 
-  //�t�@�C����z��Ɋi�[���ϐ���
+  //ファイルを配列に格納し変数に
   $chat = file($filename1);
 
-  //���[�v�֐���p����/explode��<>����菜���A$hairetsu�̒��g�̂��ꂼ��̒l���擾�B
+  //ループ関数を用いて/explodeで<>を取り除き、$hairetsuの中身のそれぞれの値を取得。
 
   foreach($chat as $value){
-
-
 
 	$pieces = explode("<>", $value);
 		if(!empty($pieces[1])){
 
 	  	$finaldata = $pieces[0] ." " .$pieces[1] ." " .$pieces[2] ." " .$pieces[3];
-  		echo $finaldata ."<br>";//$pieces�����ׂĕ\��
+  		echo $finaldata ."<br>";//$piecesをすべて表示
 		}
-
-
   }
-
 }
 ?>
 
-
-
 <?php
-//�ҏW�p�v���O�����J�n
+//編集用プログラム開始
 ?>
 
 <html>
-
 <form method="post" action="mission_2-6check.php">
-
 <title>
-�ҏW�ԍ��p�t�H�[��
+編集番号用フォーム
 </title>
 <p>
-<h2>�ҏW�ԍ��p�t�H�[��</h2>
-���e��ҏW�������Ƃ��Ɏg���Ă��������B<br>
-�ҏW�Ώ۔ԍ��F<br>
-<input type="text" name="�ҏW�ԍ�"/><br>
-�p�X���[�h�F<br>
-<input type="text" name="�ҏW�p�Í�"/><br>
+<h2>編集番号用フォーム</h2>
+投稿を編集したいときに使ってください。<br>
+編集対象番号：<br>
+<input type="text" name="編集番号"/><br>
+パスワード：<br>
+<input type="text" name="編集用暗号"/><br>
 <br>
-<input type="submit" value="���̔ԍ��̓��e��ҏW����" />
+<input type="submit" value="この番号の投稿を編集する" />
 </p>
 </form>
 
-
 <?php
-$password = $_POST['�ҏW�p�Í�'];
-$edit = $_POST['�ҏW�ԍ�'];
+$password = $_POST['編集用暗号'];
+$edit = $_POST['編集番号'];
 
-//�e�L�X�g�t�@�C�����֐��Ɋi�[
+//テキストファイルを関数に格納
 $filename = 'kadai2-6check.txt';
 
-//if����p���āA�f�[�^�̑��M���������������Ə�����t����
+//if分を用いて、データの送信があった時だけと条件を付ける
 if(!empty($edit)){
 
 $code = $password;
 
-//�t�@�C����z��Ɋi�[���ϐ���
+//ファイルを配列に格納し変数に
 $chat = file($filename);
 
-//�t�@�C����ǂݍ��݃��[�h�ŊJ���B
+//ファイルを読み込みモードで開く。
 $fp2 = fopen($filename, 'r');
 
-	/*���[�v�֐���p����/explode��<>����菜���A$chat�̒��g�̂��ꂼ��̒l���擾�B*/
+	/*ループ関数を用いて/explodeで<>を取り除き、$chatの中身のそれぞれの値を取得。*/
 	foreach($chat as $value){
 	$pieces = explode("<>", $value);
 
-
-		/*�e�L�X�g�t�@�C���ɂ��铊�e�ԍ���POST�ŕҏW�ԍ��t�H�[������
-	  	�󂯎�����ҏW�ԍ����r���A�C�R�[���̎����̔z��̒l���擾����*/
+		/*テキストファイルにある投稿番号とPOSTで編集番号フォームから
+	  	受け取った編集番号を比較し、イコールの時その配列の値を取得する*/
 		if($pieces[0] == $edit and $pieces[4] == $password){
 		$edittedname = $pieces[1];
 		$edittedcomment = $pieces[2];
-		//�t�H�[����echo�ŕ\��������
+		//フォームをechoで表示させる
 		echo "<form method='post' action='mission_2-6check.php'>";
-		echo "���O<br><input type='text' name='�V���O' value = '".$edittedname."'/><br>";
-		echo "�R�����g<br><textarea name='�Vcomment' rows='4' cols='50'>".$edittedcomment."</textarea><br>";
-		echo "<input type='submit'value='�ҏW���e�𑗐M' />";
-		echo "<input type='hidden' name='�ҏW' value= '".$edit."'/>";
+		echo "名前<br><input type='text' name='新名前' value = '".$edittedname."'/><br>";
+		echo "コメント<br><textarea name='新comment' rows='4' cols='50'>".$edittedcomment."</textarea><br>";
+		echo "<input type='submit'value='編集内容を送信' />";
+		echo "<input type='hidden' name='編集' value= '".$edit."'/>";
 		}
-	
 	}
 fclose($fp2);
-
 }
+
 if($pieces[4] == $password){
 
-//POST�ő��M���ꂽ�f�[�^���󂯎��B
-$newname = $_POST['�V���O'];
-$newcomment = $_POST['�Vcomment'];
-$hidden = $_POST['�ҏW'];
-$edit2 = $_POST['�ҏW�ԍ�'];
+//POSTで送信されたデータを受け取る。
+$newname = $_POST['新名前'];
+$newcomment = $_POST['新comment'];
+$hidden = $_POST['編集'];
+$edit2 = $_POST['編集番号'];
 $newcomment2 = str_replace("\r\n","",$newcomment);
 //echo $hidden;
 
-//hidden�ŗ^����ꂽ�l������Ƃ������ҏW���[�h�ɂ���B
+//hiddenで与えられた値があるときだけ編集モードにする。
 	if(!empty($hidden)){
-//	echo "�ҏW�p�f�[�^�����M����܂���";
+//	echo "編集用データが送信されました";
 //	echo $hidden;
 	
-	//�t�@�C����z��Ɋi�[���ϐ���
+	//ファイルを配列に格納し変数に
 	$chat0 = file($filename);
 
-	//�t�@�C���̓��e���폜���������݃��[�h�ŊJ���B
+	//ファイルの内容を削除し書き込みモードで開く。
 	$fp0 = fopen($filename, 'w+');
 
-		/*���[�v�֐���p����/explode��<>����菜���A$chat�̒��g�̂��ꂼ��̒l���擾�B*/
+		/*ループ関数を用いて/explodeで<>を取り除き、$chatの中身のそれぞれの値を取得。*/
 		foreach($chat0 as $value0){
 		$pieces0 = explode("<>", $value0);
 
-			/*�e�L�X�g�t�@�C���ɂ��铊�e�ԍ���POST�ŕҏW�ԍ��t�H�[������
-		  	�󂯎�����ҏW�ԍ����r���A�C�R�[���̎����Ƃ̓��e���e�ƍ����ւ���*/
+			/*テキストファイルにある投稿番号とPOSTで編集番号フォームから
+		  	受け取った編集番号を比較し、イコールの時もとの投稿内容と差し替える*/
 			if($pieces0[0] == $hidden){
 			//echo $hidden;
 			array_splice($pieces0, 2, 1, "$newcomment2");
@@ -308,50 +267,40 @@ $newcomment2 = str_replace("\r\n","",$newcomment);
 			$editteddata = $pieces0[0] ."<>" .$pieces0[1] ."<>" .$pieces0[2] ."<>" .$pieces0[3] ."<>" .$pieces0[4] ."<>";
 			fwrite($fp0, $editteddata ."\n");
 
-				//�C�R�[���łȂ��A�����e�ԍ�������Ƃ��͂��Ƃ̓��e���ēx�������ށB
+				//イコールでなく、かつ投稿番号があるときはもとの内容を再度書き込む。
 				}elseif(!empty($pieces0[1])){
 				$data = $pieces0[0] ."<>" .$pieces0[1] ."<>" .$pieces0[2] ."<>" .$pieces0[3] ."<>" .$pieces0[4] ."<>";
 				fwrite($fp0, $data ."\n");
 				
-				//���e�ԍ����폜����Ă��鎞��
+				//投稿番号が削除されている時は
 				}else{
 				fwrite($fp0, "\n");
 				}
-
 		}
 	fclose($fp0);
 	}
-
-
 }
-
 ?>
 
 <?php
-//if����p���āA�f�[�^�̑��M���������������Ə�����t����
-if(!empty($_POST['�V���O'])){
-
+//if分を用いて、データの送信があった時だけと条件を付ける
+if(!empty($_POST['新名前'])){
   
   $filename1 = 'kadai2-6check.txt';
 
-  //�t�@�C����z��Ɋi�[���ϐ���
+  //ファイルを配列に格納し変数に
   $chat = file($filename1);
 
-  //���[�v�֐���p����/explode��<>����菜���A$hairetsu�̒��g�̂��ꂼ��̒l���擾�B
+  //ループ関数を用いて/explodeで<>を取り除き、$hairetsuの中身のそれぞれの値を取得。
 
   foreach($chat as $value){
-
-
 
 	$pieces = explode("<>", $value);
 		if(!empty($pieces[1])){
 
 	  	$finaldata = $pieces[0] ." " .$pieces[1] ." " .$pieces[2] ." " .$pieces[3];
-  		echo $finaldata ."<br>";//$pieces�����ׂĕ\��
+  		echo $finaldata ."<br>";//$piecesをすべて表示
 		}
-
-
   }
-
 }
 ?>
